@@ -192,11 +192,64 @@ try {
 
 #### Sign Out
 
+**Simple Sign Out:**
 ```dart
 await AuthRepository.instance.signOut();
 ```
 
+**With Error Handling:**
+```dart
+try {
+  await AuthRepository.instance.signOut();
+  // User signed out successfully
+  // Auth state stream will automatically update
+} catch (e) {
+  print('Sign out error: $e');
+}
+```
+
+**In a Button:**
+```dart
+ElevatedButton(
+  onPressed: () async {
+    await AuthRepository.instance.signOut();
+    // Navigation handled by auth state stream
+  },
+  child: const Text('Sign Out'),
+)
+```
+
+**With Loading State:**
+```dart
+IconButton(
+  icon: const Icon(Icons.logout),
+  onPressed: () async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    try {
+      await AuthRepository.instance.signOut();
+      if (mounted) Navigator.pop(context);
+    } catch (e) {
+      if (mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
+    }
+  },
+)
+```
+
 ### 4. Use Reusable UI
+
+#### Sign In Screen
 
 ```dart
 Navigator.push(
@@ -215,14 +268,86 @@ Navigator.push(
         );
       },
       onForgotPassword: () {
-        // Navigate to forgot password screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ReusableForgotPasswordScreen(),
+          ),
+        );
       },
       onSignUpTap: () {
-        // Navigate to sign up screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ReusableSignUpScreen(),
+          ),
+        );
       },
     ),
   ),
 );
+```
+
+#### Sign Up Screen
+
+```dart
+ReusableSignUpScreen(
+  onSignedUp: (result) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Account created! Please check your email.'),
+      ),
+    );
+  },
+  onError: (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(error.message)),
+    );
+  },
+  passwordRequirements: PasswordRequirements.secure,
+  requireName: true,
+  requireTermsAcceptance: true,
+)
+```
+
+#### Forgot Password Screen
+
+```dart
+ReusableForgotPasswordScreen(
+  onEmailSent: () {
+    // Show success message
+  },
+  onError: (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(error.message)),
+    );
+  },
+  onBackToSignIn: () {
+    Navigator.pop(context);
+  },
+)
+```
+
+#### Protected Routes with Auth Guard
+
+```dart
+// Wrap protected content with ReusableAuthGuard
+ReusableAuthGuard(
+  child: HomeScreen(),
+  unauthenticatedWidget: ReusableSignInScreen(
+    onSignedIn: (result) {
+      // Auth guard will automatically show HomeScreen
+    },
+  ),
+)
+
+// Or with custom unauthenticated screen
+ReusableAuthGuard(
+  child: ProtectedScreen(),
+  onUnauthenticated: () {
+    Navigator.pushNamed(context, '/login');
+  },
+)
 ```
 
 ## ⚙️ Configuration
@@ -338,19 +463,21 @@ flutter test
 
 ### AuthRepository
 
-| Method | Description |
-|--------|-------------|
-| `initialize(config)` | Initialize the repository |
-| `authStateChanges()` | Stream of auth state changes |
-| `signUpWithEmail()` | Sign up with email/password |
-| `signInWithEmail()` | Sign in with email/password |
-| `signInWithMagicLink()` | Send magic link email |
-| `signInWithOAuth()` | Sign in with OAuth provider |
-| `signOut()` | Sign out current user |
-| `sendPasswordResetEmail()` | Send password reset email |
-| `getCurrentSession()` | Get current session |
-| `refreshSession()` | Refresh auth tokens |
-| `isSignedIn()` | Check if user is signed in |
+| Method | Description | Returns |
+|--------|-------------|---------|
+| `initialize(config)` | Initialize the repository | `Future<AuthRepository>` |
+| `authStateChanges()` | Stream of auth state changes | `Stream<AuthResult?>` |
+| `signUpWithEmail()` | Sign up with email/password | `Future<AuthResult>` |
+| `signInWithEmail()` | Sign in with email/password | `Future<AuthResult>` |
+| `signInWithMagicLink()` | Send magic link email | `Future<AuthResult>` |
+| `signInWithOAuth()` | Sign in with OAuth provider | `Future<AuthResult>` |
+| **`signOut()`** | **Sign out current user & clear session** | `Future<void>` |
+| `sendPasswordResetEmail()` | Send password reset email | `Future<void>` |
+| `getCurrentSession()` | Get current session | `Future<AuthResult?>` |
+| `refreshSession()` | Refresh auth tokens | `Future<AuthResult>` |
+| `isSignedIn()` | Check if user is signed in | `Future<bool>` |
+| `updateUserMetadata()` | Update user metadata | `Future<AuthResult>` |
+| `verifyOtp()` | Verify OTP code | `Future<AuthResult>` |
 
 ### Models
 

@@ -21,3 +21,6 @@ export 'src/utils/validators.dart';
 
 // Export widgets
 export 'src/widgets/reusable_signin_screen.dart';
+export 'src/widgets/reusable_signup_screen.dart';
+export 'src/widgets/reusable_forgot_password.dart';
+export 'src/widgets/reusable_auth_guard.dart';
