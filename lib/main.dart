@@ -6,6 +6,25 @@ import 'sharedwidget/reusable_text_form_field.dart';
 import 'sharedwidget/reusable_circle_avatar.dart';
 import 'sharedwidget/reusable_datepicker.dart';
 import 'sharedwidget/reusable_radiogroup.dart';
+import 'sharedwidget/reusabel_snackbar.dart';
+import 'sharedwidget/reusable_refresh_indicator.dart';
+// import 'sharedwidget/reusable_svg_icon.dart'; // Requires flutter_svg package
+
+// Note: The following widgets are empty placeholders and not yet implemented:
+// - reusable_animated_switcher.dart
+// - reusable_container.dart
+// - reusable_bottom_nav_bar.dart
+// - reusable_badge.dart
+// - reusable_image.dart
+// - reusable_icon_button.dart
+// - reusable_drawer.dart
+// - reusable_error_view.dart
+// - reusable_divider.dart
+// - reusable_stepper.dart
+// - reusable_shimmer.dart
+// - reusable_scaffold.dart
+// - reusable_toast.dart
+// - reusable_tab_bar.dart
 
 void main() {
   runApp(const MyApp());
@@ -40,6 +59,17 @@ class _HomeScreenState extends State<HomeScreen> {
   DateTime? _selectedDate;
   String _selectedGender = 'Male';
   final _formKey = GlobalKey<FormState>();
+  bool _isRefreshing = false;
+
+  Future<void> _handleRefresh() async {
+    setState(() => _isRefreshing = true);
+    // Simulate network delay
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() => _isRefreshing = false);
+    if (mounted) {
+      ReusabelSnackbar.success(context, 'Content refreshed successfully!');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +86,92 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildSectionTitle('Reusable Dropdown'),
+      body: ReusableRefreshIndicator(
+        onRefresh: _handleRefresh,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildSectionTitle('Reusable Snackbar'),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => ReusabelSnackbar.success(context, 'Success! Operation completed.'),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                    child: const Text('Show Success'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => ReusabelSnackbar.error(context, 'Error! Something went wrong.'),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                    child: const Text('Show Error'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => ReusabelSnackbar.info(context, 'Info: Here is some information.'),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                    child: const Text('Show Info'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => ReusabelSnackbar.warning(context, 'Warning! Please be careful.'),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.orange),
+                    child: const Text('Show Warning'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () => ReusabelSnackbar.show(
+                      context,
+                      message: 'This is an action snackbar',
+                      type: ReusabelSnackType.info,
+                      actionLabel: 'UNDO',
+                      onAction: () {
+                        ReusabelSnackbar.success(context, 'Action executed!');
+                      },
+                    ),
+                    style: ElevatedButton.styleFrom(backgroundColor: Colors.purple),
+                    child: const Text('Show with Action'),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              _buildSectionTitle('Reusable Refresh Indicator'),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.blue.shade200),
+                ),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.refresh, color: Colors.blue),
+                        SizedBox(width: 8),
+                        Text(
+                          'Pull down to refresh!',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'This entire page is wrapped with ReusableRefreshIndicator. '
+                      'Pull down from the top to trigger a refresh and see the success snackbar.',
+                      style: TextStyle(color: Colors.black87),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              _buildSectionTitle('Reusable Dropdown'),
             const SizedBox(height: 12),
             ReuabelDropdown<String>(
               labelText: 'Country',
@@ -329,7 +439,8 @@ class _HomeScreenState extends State<HomeScreen> {
               spacing: 16,
             ),
             const SizedBox(height: 24),
-          ],
+            ],
+          ),
         ),
       ),
     );
