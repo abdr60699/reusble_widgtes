@@ -57,6 +57,39 @@ final result = await SocialAuth.instance.signInWithGoogle();
 
 ---
 
+### 3. Supabase Authentication (`supabase_auth/`)
+
+Production-ready authentication module with Supabase backend.
+
+**Features:**
+- Email/password authentication
+- Magic link (passwordless) authentication
+- OAuth providers (Google, Apple, Facebook, Twitter, GitHub)
+- Password reset and email verification
+- Reactive auth state management
+- Secure token storage
+- Reusable UI screens (SignIn, SignUp, ForgotPassword)
+- Configurable password requirements
+
+**Quick Start:**
+```dart
+await AuthRepository.initialize(
+  SupabaseAuthConfig(
+    supabaseUrl: 'YOUR_SUPABASE_URL',
+    supabaseAnonKey: 'YOUR_ANON_KEY',
+  ),
+);
+
+final result = await AuthRepository.instance.signInWithEmail(
+  email: 'user@example.com',
+  password: 'password',
+);
+```
+
+[📖 View Full Documentation](supabase_auth/README.md)
+
+---
+
 ## 🚀 Installation
 
 ### Option 1: Path Dependency (Monorepo)
@@ -70,6 +103,9 @@ dependencies:
 
   social_auth:
     path: ../modules/social_auth
+
+  supabase_auth:
+    path: ../modules/supabase_auth
 ```
 
 ### Option 2: Copy Module
@@ -147,6 +183,11 @@ cd modules/social_auth/example
 flutter run
 ```
 
+```bash
+cd modules/supabase_auth/example
+flutter run
+```
+
 ---
 
 ## 🏗️ Architecture Principles
@@ -199,6 +240,7 @@ mkdir -p modules/new_module/{lib,test,example}
 |--------|------|-------------|-----------|----------|
 | connectivity_offline | Medium | Hive, connectivity_plus | All | Apps needing offline support |
 | social_auth | Medium | Provider SDKs | All (provider-specific) | Apps with social login |
+| supabase_auth | Medium | Supabase, secure storage | All | Apps using Supabase backend |
 
 ---
 
