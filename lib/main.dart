@@ -12,7 +12,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -66,7 +66,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ReuabelDropdown<String>(
               labelText: 'Country',
               hintText: 'Select your country',
-              items: const ['USA', 'Canada', 'UK', 'India', 'Australia', 'Germany', 'France'],
+              items: const [
+                'USA',
+                'Canada',
+                'UK',
+                'India',
+                'Australia',
+                'Germany',
+                'France'
+              ],
               allowClear: true,
               onChanged: (value) {
                 setState(() {
@@ -82,7 +90,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: const TextStyle(color: Colors.grey),
               ),
             const SizedBox(height: 24),
-
             _buildSectionTitle('Reusable Text Form Fields'),
             const SizedBox(height: 12),
             Form(
@@ -131,11 +138,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   const SizedBox(height: 12),
-                  ReusableTextFormField(
+                  const ReusableTextFormField(
                     label: 'Bio',
                     hintText: 'Tell us about yourself',
                     maxLines: 3,
-                    prefixIcon: const Icon(Icons.info),
+                    prefixIcon: Icon(Icons.info),
                   ),
                   const SizedBox(height: 12),
                   ElevatedButton(
@@ -152,14 +159,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 24),
-
             _buildSectionTitle('Reusable Circle Avatars'),
             const SizedBox(height: 12),
-            Wrap(
+            const Wrap(
               spacing: 16,
               runSpacing: 16,
               alignment: WrapAlignment.center,
-              children: const [
+              children: [
                 ReusableCircleAvatar(
                   initials: 'AM',
                   radius: 35,
@@ -192,9 +198,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(height: 12),
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
+              children: [
                 ReusableCircleAvatar(
                   initials: 'XL',
                   radius: 30,
@@ -213,7 +219,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const SizedBox(height: 24),
-
             _buildSectionTitle('Reusable Date Picker'),
             const SizedBox(height: 12),
             ReusableDatePicker(
@@ -260,7 +265,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             const SizedBox(height: 24),
-
             _buildSectionTitle('Reusable Radio Group'),
             const SizedBox(height: 12),
             Container(
@@ -282,7 +286,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 12),
                   ReusableRadioGroup<String>(
-                    items: const ['Male', 'Female', 'Other', 'Prefer not to say'],
+                    items: const [
+                      'Male',
+                      'Female',
+                      'Other',
+                      'Prefer not to say'
+                    ],
                     value: _selectedGender,
                     onChanged: (value) {
                       setState(() {
@@ -310,7 +319,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             const SizedBox(height: 24),
-
             _buildSectionTitle('More Radio Options'),
             const SizedBox(height: 12),
             ReusableRadioGroup<String>(

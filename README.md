@@ -1,4 +1,4 @@
-# reusablecomponents
+# reuablewidgets
 
 A new Flutter project.
 
