@@ -90,6 +90,39 @@ final result = await AuthRepository.instance.signInWithEmail(
 
 ---
 
+### 4. Firebase Cloud Messaging (`fcm_notifications/`)
+
+Production-ready FCM push notifications module for Flutter.
+
+**Features:**
+- Foreground, background, and terminated state notification handling
+- Topic subscription and unsubscription
+- FCM token management and refresh
+- Local notifications for foreground display
+- Android notification channels
+- iOS APNs integration
+- Deep linking support
+- Data payload handling
+- Stream-based notification delivery
+- Permission request (iOS)
+- Analytics integration (optional)
+
+**Quick Start:**
+```dart
+await FCMService.initialize(FCMConfig.production);
+
+FCMService.instance.notificationStream.listen((notification) {
+  print('${notification.title}: ${notification.body}');
+});
+
+final token = await FCMService.instance.getToken();
+await FCMService.instance.subscribeToTopic('news');
+```
+
+[📖 View Full Documentation](fcm_notifications/README.md)
+
+---
+
 ## 🚀 Installation
 
 ### Option 1: Path Dependency (Monorepo)
@@ -106,6 +139,9 @@ dependencies:
 
   supabase_auth:
     path: ../modules/supabase_auth
+
+  fcm_notifications:
+    path: ../modules/fcm_notifications
 ```
 
 ### Option 2: Copy Module
@@ -188,6 +224,11 @@ cd modules/supabase_auth/example
 flutter run
 ```
 
+```bash
+cd modules/fcm_notifications/example
+flutter run
+```
+
 ---
 
 ## 🏗️ Architecture Principles
@@ -241,6 +282,7 @@ mkdir -p modules/new_module/{lib,test,example}
 | connectivity_offline | Medium | Hive, connectivity_plus | All | Apps needing offline support |
 | social_auth | Medium | Provider SDKs | All (provider-specific) | Apps with social login |
 | supabase_auth | Medium | Supabase, secure storage | All | Apps using Supabase backend |
+| fcm_notifications | Medium | Firebase, local notifications | Android, iOS, Web | Apps needing push notifications |
 
 ---
 
