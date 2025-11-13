@@ -90,6 +90,68 @@ final result = await AuthRepository.instance.signInWithEmail(
 
 ---
 
+### 4. Firebase Cloud Messaging (`fcm_notifications/`)
+
+Production-ready FCM push notifications module for Flutter.
+
+**Features:**
+- Foreground, background, and terminated state notification handling
+- Topic subscription and unsubscription
+- FCM token management and refresh
+- Local notifications for foreground display
+- Android notification channels
+- iOS APNs integration
+- Deep linking support
+- Data payload handling
+- Stream-based notification delivery
+- Permission request (iOS)
+- Analytics integration (optional)
+
+**Quick Start:**
+```dart
+await FCMService.initialize(FCMConfig.production);
+
+FCMService.instance.notificationStream.listen((notification) {
+  print('${notification.title}: ${notification.body}');
+});
+
+final token = await FCMService.instance.getToken();
+await FCMService.instance.subscribeToTopic('news');
+```
+
+[📖 View Full Documentation](fcm_notifications/README.md)
+
+---
+
+### 5. Flutter Theming System (`flutter_theming/`)
+
+Comprehensive, production-ready theming system for consistent design across your app.
+
+**Features:**
+- Complete design token system (colors, typography, spacing, radii, elevations, motion)
+- Dynamic theme switching (light, dark, system, custom)
+- Persistent theme preferences
+- WCAG AA/AAA accessibility compliance
+- Custom theme creation and validation
+- Scoped theme overrides
+- Material 3 / Dynamic color support
+- High contrast mode for accessibility
+- Theme import/export (JSON)
+- State management agnostic (Provider, Riverpod, Bloc, GetIt)
+
+**Quick Start:**
+```
+Conceptual usage (see docs for implementation):
+1. Initialize ThemeService in main()
+2. Wrap app with ThemeObserver or state management provider
+3. Access tokens: ThemeService.instance.tokens.colors.primary
+4. Switch themes: ThemeService.instance.setTheme(AppThemeMode.dark)
+```
+
+[📖 View Full Documentation](flutter_theming/README.md)
+
+---
+
 ## 🚀 Installation
 
 ### Option 1: Path Dependency (Monorepo)
@@ -106,6 +168,12 @@ dependencies:
 
   supabase_auth:
     path: ../modules/supabase_auth
+
+  fcm_notifications:
+    path: ../modules/fcm_notifications
+
+  flutter_theming:
+    path: ../modules/flutter_theming
 ```
 
 ### Option 2: Copy Module
@@ -188,6 +256,13 @@ cd modules/supabase_auth/example
 flutter run
 ```
 
+```bash
+cd modules/fcm_notifications/example
+flutter run
+```
+
+**Note:** The flutter_theming module is a design specification (documentation only). See its README and docs/ folder for implementation guidance.
+
 ---
 
 ## 🏗️ Architecture Principles
@@ -241,6 +316,8 @@ mkdir -p modules/new_module/{lib,test,example}
 | connectivity_offline | Medium | Hive, connectivity_plus | All | Apps needing offline support |
 | social_auth | Medium | Provider SDKs | All (provider-specific) | Apps with social login |
 | supabase_auth | Medium | Supabase, secure storage | All | Apps using Supabase backend |
+| fcm_notifications | Medium | Firebase, local notifications | Android, iOS, Web | Apps needing push notifications |
+| flutter_theming | Documentation | Persistence adapter (your choice) | All | Apps needing consistent theming |
 
 ---
 
