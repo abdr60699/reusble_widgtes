@@ -18,6 +18,22 @@ class ReusableShimmer extends StatefulWidget {
 
   @override
   State<ReusableShimmer> createState() => _ReusableShimmerState();
+
+  // Helper method to create shimmer placeholders
+  static Widget placeholder({
+    double? width,
+    double? height,
+    BorderRadius? borderRadius,
+  }) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: borderRadius ?? BorderRadius.circular(4),
+      ),
+    );
+  }
 }
 
 class _ReusableShimmerState extends State<ReusableShimmer>
@@ -74,22 +90,6 @@ class _ReusableShimmerState extends State<ReusableShimmer>
           child: widget.child,
         );
       },
-    );
-  }
-
-  // Helper method to create shimmer placeholders
-  static Widget placeholder({
-    double? width,
-    double? height,
-    BorderRadius? borderRadius,
-  }) {
-    return Container(
-      width: width,
-      height: height,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: borderRadius ?? BorderRadius.circular(4),
-      ),
     );
   }
 }
