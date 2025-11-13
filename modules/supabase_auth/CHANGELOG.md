@@ -14,11 +14,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - OAuth provider support (Google, Apple, Facebook, Twitter, GitHub)
 - Password reset functionality
 - Email verification support
+- **Sign out functionality with session cleanup**
 - Reactive auth state management with streams
 - Secure token storage with flutter_secure_storage
 - Configurable password requirements
 - Client-side email and password validation
 - ReusableSignInScreen widget
+- ReusableSignUpScreen widget with password strength indicator
+- ReusableForgotPasswordScreen widget
+- ReusableAuthGuard widget for protected routes
 - AuthRepository facade pattern
 - SupabaseAuthService implementation
 - TokenStorage interface with SecureTokenStorage and MemoryTokenStorage
