@@ -25,49 +25,52 @@ class ReusableErrorView extends StatelessWidget {
     return Container(
       color: backgroundColor ?? Colors.transparent,
       child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon ?? Icons.error_outline,
-                size: 80,
-                color: iconColor ?? Colors.red.shade400,
-              ),
-              const SizedBox(height: 24),
-              Text(
-                title ?? 'Oops! Something went wrong',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon ?? Icons.error_outline,
+                  size: 64,
+                  color: iconColor ?? Colors.red.shade400,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 12),
-              Text(
-                message ?? 'We encountered an error. Please try again.',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey.shade600,
+                const SizedBox(height: 16),
+                Text(
+                  title ?? 'Oops! Something went wrong',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              if (onRetry != null) ...[
-                const SizedBox(height: 24),
-                ElevatedButton.icon(
-                  onPressed: onRetry,
-                  icon: const Icon(Icons.refresh),
-                  label: Text(buttonText ?? 'Retry'),
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 32,
-                      vertical: 12,
+                const SizedBox(height: 8),
+                Text(
+                  message ?? 'We encountered an error. Please try again.',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey.shade600,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                if (onRetry != null) ...[
+                  const SizedBox(height: 16),
+                  ElevatedButton.icon(
+                    onPressed: onRetry,
+                    icon: const Icon(Icons.refresh),
+                    label: Text(buttonText ?? 'Retry'),
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 10,
+                      ),
                     ),
                   ),
-                ),
+                ],
               ],
-            ],
+            ),
           ),
         ),
       ),
