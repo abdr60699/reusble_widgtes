@@ -1,379 +1,559 @@
-# Firebase Authentication Module - Production-Ready Design Guide
+# Firebase Authentication - Simple Implementation Guide
 
-A comprehensive, production-ready Firebase Authentication module for Flutter apps. This guide provides complete architecture, integration patterns, security best practices, and step-by-step flows for implementing robust authentication with minimal friction.
+A straightforward guide to implement Firebase Authentication in your Flutter app. No code, just clear steps and patterns.
 
-## Overview
+## Quick Setup (30 Minutes)
 
-This authentication module provides:
+### 1. Firebase Project Setup
 
-- **Multiple Sign-In Methods**: Email/password, phone (OTP), Google, Apple, Facebook
-- **Account Management**: Sign-up, sign-in, sign-out, account linking/unlinking
-- **Email Operations**: Email verification, password reset, email change
-- **Session Management**: Token refresh, persistence, multi-device sessions
-- **Security**: Re-authentication, token validation, secure storage, MFA support
-- **Error Handling**: Comprehensive error mapping with user-friendly messages
-- **Backend Integration**: Token verification, custom claims, role management
+**Create Project**:
+1. Go to [Firebase Console](https://console.firebase.google.com)
+2. Click "Add project"
+3. Enter project name
+4. Disable Google Analytics (or enable if needed)
+5. Click "Create project"
 
-## Quick Start (10-20 Minutes)
+**Enable Authentication**:
+1. In Firebase Console, go to "Authentication"
+2. Click "Get started"
+3. Go to "Sign-in method" tab
+4. Enable providers you need:
+   - Email/Password: Click, toggle "Enable", Save
+   - Google: Click, toggle "Enable", Save
+   - Phone: Click, toggle "Enable", Save (requires billing)
+   - Apple: Click, toggle "Enable", configure Service ID and key, Save
+   - Facebook: Click, toggle "Enable", add App ID and Secret, Save
 
-### Integration Checklist
+### 2. Platform Setup
 
-1. **Set up Firebase Project**
-   - Create Firebase project in Firebase Console
-   - Enable Authentication providers (Email, Phone, Google, Apple, Facebook)
-   - Configure OAuth settings for each provider
+**Android**:
+1. In Firebase Console, click "Add app" → Android
+2. Enter your package name (from `android/app/build.gradle`)
+3. Download `google-services.json`
+4. Place in `android/app/`
+5. Get SHA-1 fingerprint:
+   ```bash
+   cd android
+   ./gradlew signingReport
+   ```
+6. Copy SHA-1 from output
+7. In Firebase Console → Project Settings → Your apps → Add fingerprint
+8. Paste SHA-1, click Save
 
-2. **Configure Platforms**
-   - **Android**: Add SHA fingerprints, download `google-services.json`
-   - **iOS**: Download `GoogleService-Info.plist`, configure Sign in with Apple
-   - **Web**: Configure OAuth redirect URIs
+**iOS**:
+1. In Firebase Console, click "Add app" → iOS
+2. Enter your bundle ID (from Xcode project)
+3. Download `GoogleService-Info.plist`
+4. Open Xcode, drag file into project root
+5. Ensure "Copy items if needed" is checked
 
-3. **Initialize Firebase in App**
-   - Add Firebase dependencies to `pubspec.yaml`
-   - Initialize Firebase in `main()` before `runApp()`
+**Web**:
+1. In Firebase Console, click "Add app" → Web
+2. Enter app nickname
+3. Copy config object (you'll need this later)
+4. In Authentication → Settings → Authorized domains
+5. Add your domain (localhost is already there)
 
-4. **Implement Auth Service**
-   - Create `AuthService` managing Firebase Authentication
-   - Implement sign-up, sign-in, sign-out methods
-   - Set up auth state listener
+### 3. Flutter Dependencies
 
-5. **Create Auth UI**
-   - Build sign-in/sign-up screens
-   - Add password reset and email verification flows
-   - Integrate social sign-in buttons
+Add to `pubspec.yaml`:
+```yaml
+dependencies:
+  firebase_core: ^2.24.0
+  firebase_auth: ^4.16.0
 
-6. **Handle Auth State**
-   - Wrap app with auth state observer
-   - Route users based on authentication status
-   - Persist sessions across app restarts
+  # For Google Sign-In
+  google_sign_in: ^6.1.5
 
-7. **Test All Flows**
-   - Test email sign-up with verification
-   - Test password reset
-   - Test social sign-in
-   - Test account linking
-   - Test sign-out
+  # For Apple Sign-In
+  sign_in_with_apple: ^5.0.0
 
-8. **Deploy**
-   - Test on real devices (all platforms)
-   - Enable production OAuth apps
-   - Monitor authentication metrics
+  # For Facebook Login
+  flutter_facebook_auth: ^6.0.3
 
-## Features
-
-### Authentication Methods
-
-- **Email/Password**: Standard email-based authentication with email verification
-- **Phone Authentication**: SMS OTP verification with auto-retrieval support
-- **Google Sign-In**: OAuth 2.0 with Google accounts
-- **Apple Sign-In**: Sign in with Apple (required for iOS apps with social login)
-- **Facebook Login**: OAuth with Facebook accounts
-- **Anonymous Auth**: Temporary sessions upgradeable to permanent accounts
-
-### Account Management
-
-- **Sign-Up**: Create accounts with validation and email verification
-- **Sign-In**: Multiple provider support with session persistence
-- **Sign-Out**: Complete session cleanup (local and server-side)
-- **Account Linking**: Link multiple providers to single account
-- **Account Unlinking**: Remove providers with fallback validation
-- **Account Deletion**: GDPR-compliant account removal with data cleanup
-
-### Email Operations
-
-- **Email Verification**: Send and verify email addresses
-- **Password Reset**: Secure password reset via email
-- **Email Change**: Update email with verification
-- **Verification Enforcement**: Require verified email for sensitive actions
-
-### Security Features
-
-- **Token Management**: Automatic token refresh, secure storage
-- **Session Persistence**: Secure session across app restarts
-- **Re-authentication**: Require login for sensitive operations
-- **Multi-Factor Authentication**: SMS-based MFA support
-- **Rate Limiting**: Prevent brute force and abuse
-- **Token Revocation**: Server-side token invalidation
-
-### Error Handling
-
-- **Comprehensive Error Mapping**: Firebase errors to user-friendly messages
-- **Recovery Guidance**: Actionable steps for each error type
-- **Retry Logic**: Automatic retry with exponential backoff
-- **Offline Support**: Queue operations when offline
-
-## Documentation
-
-### Core Documentation
-
-- **[ARCHITECTURE.md](docs/ARCHITECTURE.md)**: Complete system architecture, components, and interaction flows
-- **[API_CONTRACTS.md](docs/API_CONTRACTS.md)**: Detailed API surface for all services and methods
-- **[FIREBASE_SETUP.md](docs/FIREBASE_SETUP.md)**: Step-by-step Firebase Console configuration
-- **[PLATFORM_INTEGRATION.md](docs/PLATFORM_INTEGRATION.md)**: Platform-specific setup (Android, iOS, Web, Desktop)
-
-### Authentication Flows
-
-- **[AUTHENTICATION_FLOWS.md](docs/AUTHENTICATION_FLOWS.md)**: Complete sign-up, sign-in, sign-out, linking flows
-- **[SECURITY_GUIDE.md](docs/SECURITY_GUIDE.md)**: Security best practices, token management, MFA
-- **[ERROR_HANDLING.md](docs/ERROR_HANDLING.md)**: Error codes, user messages, recovery actions
-
-### Testing & Maintenance
-
-- **[TESTING_GUIDE.md](docs/TESTING_GUIDE.md)**: Unit, integration, and manual testing strategies
-- **[TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md)**: Common issues, debugging steps, configuration problems
-- **[FOLDER_STRUCTURE.md](docs/FOLDER_STRUCTURE.md)**: Recommended project organization
-- **[REAL_WORLD_EXAMPLES.md](docs/REAL_WORLD_EXAMPLES.md)**: Three detailed implementation scenarios
-
-## Architecture Overview
-
-### High-Level Components
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         Flutter App                              │
-│  ┌────────────────────────────────────────────────────────────┐ │
-│  │                    Auth UI Layer                           │ │
-│  │  • SignInScreen  • SignUpScreen  • ProfileScreen          │ │
-│  │  • PasswordResetScreen  • EmailVerificationPrompt         │ │
-│  └────────────────────────────────────────────────────────────┘ │
-│                           ▲                                      │
-│                           │ uses                                 │
-│  ┌────────────────────────┴───────────────────────────────────┐ │
-│  │                    AuthService                             │ │
-│  │  • signUpWithEmail()  • signInWithEmail()                 │ │
-│  │  • signInWithGoogle()  • signInWithPhone()                │ │
-│  │  • linkProvider()  • unlinkProvider()  • signOut()        │ │
-│  │  • sendEmailVerification()  • sendPasswordReset()         │ │
-│  └────────────────────────────────────────────────────────────┘ │
-│       ▲                   ▲                   ▲                  │
-│       │                   │                   │                  │
-│  ┌────┴─────┐  ┌──────────┴─────────┐  ┌─────┴────────┐        │
-│  │ Auth     │  │  UserSession       │  │  Social      │        │
-│  │ Repository│  │  Manager           │  │  Providers   │        │
-│  │ • Persist │  │  • Token refresh   │  │  • Google    │        │
-│  │ • Load    │  │  • Session state   │  │  • Apple     │        │
-│  │ • Clear   │  │  • Token store     │  │  • Facebook  │        │
-│  └───────────┘  └────────────────────┘  └──────────────┘        │
-│       ▲                   ▲                                      │
-│       │                   │                                      │
-│  ┌────┴───────────────────┴─────────────────────────────────┐  │
-│  │               Firebase Authentication                     │  │
-│  │  • Core auth logic  • Token management  • Providers      │  │
-│  └───────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-                  ┌──────────────────┐
-                  │  Firebase        │
-                  │  Backend         │
-                  │  • User database │
-                  │  • Token issue   │
-                  │  • Email service │
-                  └──────────────────┘
+  # For secure storage (optional)
+  flutter_secure_storage: ^9.0.0
 ```
 
-### Component Responsibilities
+Run: `flutter pub get`
 
-| Component | Purpose |
-|-----------|---------|
-| **AuthService** | Main authentication interface, orchestrates all auth operations |
-| **AuthRepository** | Persistence layer for user data and session info |
-| **UserSessionManager** | Manages active sessions, token refresh, expiry tracking |
-| **SocialProviderWrappers** | Platform-specific wrappers for Google, Apple, Facebook SDKs |
-| **AuthStateObserver** | Observes and broadcasts authentication state changes |
-| **AuthErrorHandler** | Maps Firebase errors to user-friendly messages |
-| **TokenStore** | Secure storage for tokens and sensitive auth data |
-| **AuthUI Screens** | Pre-built or customizable auth screens |
+### 4. Initialize Firebase
 
-## Usage Patterns
-
-### Basic Sign-Up Flow
-
+In `main.dart`:
 ```
-User Flow:
-1. User opens app
-2. Taps "Sign Up"
-3. Enters email, password, display name
-4. Submits form
-5. App calls AuthService.signUpWithEmail()
-6. Firebase creates account
-7. Email verification sent
-8. User sees "Verify email" message
-9. User clicks link in email
-10. Email verified
-11. User can access full app features
+Steps:
+1. Import firebase_core
+2. Make main() async
+3. Call WidgetsFlutterBinding.ensureInitialized()
+4. Call await Firebase.initializeApp()
+5. Then call runApp()
 
-Implementation:
-- Validate input (email format, password strength)
-- Call signUpWithEmail(email, password, displayName)
-- Handle success: Navigate to email verification prompt
-- Handle errors: Show validation messages
-- Listen for email verification status
-- Enable features when verified
+This initializes Firebase before your app starts.
 ```
 
-### Basic Sign-In Flow
+## Implementation Patterns
 
-```
-User Flow:
-1. User opens app
-2. Taps "Sign In"
-3. Enters email and password
-4. Submits form
-5. App calls AuthService.signInWithEmail()
-6. Firebase authenticates
-7. Token issued and stored
-8. User navigated to home screen
+### Auth Service Structure
 
-Implementation:
-- Validate input
-- Call signInWithEmail(email, password)
-- Handle success: Store session, navigate to home
-- Handle errors: Show appropriate message (wrong password, user not found, etc.)
-- Persist session for next app start
-```
+Create a service class that wraps Firebase Auth:
 
-### Social Sign-In Flow
+**AuthService responsibilities**:
+- Sign up with email/password
+- Sign in with email/password
+- Sign in with Google
+- Sign in with Apple
+- Sign in with Facebook
+- Sign in with phone (OTP)
+- Send email verification
+- Send password reset
+- Sign out
+- Get current user
+- Listen to auth state changes
 
-```
-User Flow:
+**Singleton pattern**:
+- One instance for entire app
+- Access via `AuthService.instance`
+
+### Sign-Up Flow (Email/Password)
+
+**Steps**:
+1. User enters email, password, confirm password
+2. Validate inputs:
+   - Email format valid
+   - Password meets requirements (min 8 chars, has uppercase, lowercase, number)
+   - Passwords match
+3. Call Firebase Auth `createUserWithEmailAndPassword(email, password)`
+4. If successful:
+   - User account created
+   - Send email verification
+   - Show "Check your email" message
+5. If error:
+   - email-already-in-use: Show "Email already registered. Try signing in."
+   - weak-password: Show "Password too weak. Use stronger password."
+   - invalid-email: Show "Invalid email format"
+   - Show generic error for others
+
+**Email verification**:
+- After sign-up, call `sendEmailVerification()`
+- User receives email with link
+- When they click, email is verified
+- Check `user.emailVerified` before allowing sensitive actions
+
+### Sign-In Flow (Email/Password)
+
+**Steps**:
+1. User enters email and password
+2. Call Firebase Auth `signInWithEmailAndPassword(email, password)`
+3. If successful:
+   - User is signed in
+   - Firebase automatically saves session
+   - Navigate to home screen
+4. If error:
+   - user-not-found: Show "No account with this email. Sign up?"
+   - wrong-password: Show "Incorrect password. Forgot password?"
+   - user-disabled: Show "Account disabled. Contact support."
+   - too-many-requests: Show "Too many attempts. Try later."
+
+**Session persistence**:
+- Firebase automatically persists session
+- On app restart, check if user is signed in
+- Use `FirebaseAuth.instance.authStateChanges()` stream
+- If user exists, go to home. If null, show sign-in.
+
+### Google Sign-In Flow
+
+**Setup**:
+1. Enable Google in Firebase Console
+2. Add SHA-1 fingerprint (Android)
+3. Add GoogleService-Info.plist (iOS)
+4. Add google_sign_in dependency
+
+**Steps**:
 1. User taps "Sign in with Google"
-2. Google consent screen shown
-3. User approves
-4. Google credential returned
-5. App calls AuthService.signInWithGoogle()
-6. Firebase links credential
-7. User signed in
-8. Profile info retrieved from provider
+2. Call Google Sign-In SDK
+3. Google shows account picker
+4. User selects account
+5. Get Google credential
+6. Call Firebase Auth `signInWithCredential(googleCredential)`
+7. If successful: User signed in
+8. If error:
+   - account-exists-with-different-credential: Show linking option
+   - Handle other errors
 
-Implementation:
-- Trigger Google Sign-In SDK
-- Get GoogleAuthCredential
-- Call signInWithGoogle(credential)
-- Handle account exists: Offer linking
-- Handle success: Navigate to home
-- Extract profile info (name, photo, email)
+**Account linking**:
+- If user already has account with same email (different provider)
+- Fetch sign-in methods for email
+- Show "Email already used. Sign in with [provider] to link."
+- After signing in, call `linkWithCredential()` to link Google
+
+### Apple Sign-In Flow (iOS Required)
+
+**Setup**:
+1. Enable Apple in Firebase Console
+2. In Apple Developer portal:
+   - Create App ID with Sign in with Apple capability
+   - Create Service ID
+   - Create Key for Sign in with Apple
+3. Configure in Firebase Console (Service ID, Key ID, Team ID)
+4. Add Sign in with Apple capability in Xcode
+
+**Steps**:
+1. User taps "Sign in with Apple"
+2. Apple shows consent screen
+3. User approves
+4. Get Apple credential
+5. Call Firebase Auth `signInWithCredential(appleCredential)`
+6. User signed in
+
+**Note**: Apple sign-in is required if you offer other social sign-in on iOS.
+
+### Phone Sign-In Flow (OTP)
+
+**Setup**:
+1. Enable Phone in Firebase Console (requires billing enabled)
+2. Add test phone numbers in Firebase Console for testing
+
+**Steps**:
+1. User enters phone number with country code (e.g., +1234567890)
+2. Call `verifyPhoneNumber(phoneNumber)`
+3. Firebase sends SMS with 6-digit code
+4. User enters code
+5. Verify code with `signInWithCredential(phoneCredential)`
+6. User signed in
+
+**Auto-retrieval** (Android):
+- On Android, code can be auto-read from SMS
+- Use `verificationCompleted` callback
+- Sign in automatically without user entering code
+
+**Resend code**:
+- Allow resend after 30-60 seconds
+- Call `verifyPhoneNumber()` again
+- New code sent
+
+### Password Reset Flow
+
+**Steps**:
+1. User taps "Forgot password"
+2. User enters email
+3. Call `sendPasswordResetEmail(email)`
+4. User receives email with reset link
+5. User clicks link (opens browser)
+6. User enters new password
+7. Password updated
+8. User can sign in with new password
+
+**In-app**:
+- Show success message after sending email
+- Don't reveal if email exists (security)
+- Always show "If email exists, reset link sent"
+
+### Sign-Out Flow
+
+**Steps**:
+1. User taps "Sign out"
+2. Show confirmation: "Are you sure?"
+3. Call `FirebaseAuth.instance.signOut()`
+4. Clear any cached user data
+5. Navigate to sign-in screen
+
+**Complete sign-out**:
+- Firebase Auth sign-out
+- Google Sign-In sign-out (if used)
+- Clear local storage/cache
+- Reset app state
+
+### Account Linking
+
+**Why**: Allow users to sign in with multiple providers (email + Google + Apple)
+
+**Steps**:
+1. User signed in with email/password
+2. User wants to add Google sign-in
+3. Call Google Sign-In to get credential
+4. Call `currentUser.linkWithCredential(googleCredential)`
+5. Now user can sign in with email OR Google
+
+**Collision handling**:
+- If email already used by another account
+- Error: account-exists-with-different-credential
+- Fetch providers for email
+- Ask user to sign in with existing provider
+- Then link new provider
+
+### Account Unlinking
+
+**Steps**:
+1. Get list of linked providers: `currentUser.providerData`
+2. User selects provider to remove
+3. Check if it's not the last provider (must keep at least one)
+4. Call `currentUser.unlink(providerId)`
+5. Provider removed
+
+**Provider IDs**:
+- Email: "password"
+- Google: "google.com"
+- Apple: "apple.com"
+- Facebook: "facebook.com"
+- Phone: "phone"
+
+## Error Handling
+
+### Common Error Codes
+
+| Error Code | User Message | Action |
+|------------|--------------|--------|
+| email-already-in-use | "This email is already registered. Try signing in." | Link to sign-in |
+| weak-password | "Password too weak. Use at least 8 characters." | Show requirements |
+| user-not-found | "No account found. Sign up instead?" | Link to sign-up |
+| wrong-password | "Incorrect password. Forgot password?" | Link to reset |
+| invalid-email | "Invalid email format" | Fix email |
+| user-disabled | "Account disabled. Contact support." | Support link |
+| too-many-requests | "Too many attempts. Try again later." | Wait/CAPTCHA |
+| requires-recent-login | "Please sign in again to continue" | Re-authenticate |
+| network-request-failed | "Network error. Check connection." | Retry |
+
+### Error Handler Pattern
+
+Create a function that maps error codes to user-friendly messages:
+
+```
+Function: handleAuthError(error)
+Input: Firebase error code
+Output: User-friendly message + suggested action
+
+Example:
+  If error = "user-not-found"
+  Return: "No account with this email. Would you like to sign up?"
+
+  If error = "wrong-password"
+  Return: "Incorrect password. Try again or reset your password."
 ```
 
-## Platform Support
+## Security Best Practices
 
-- **Android**: Full support (Phone OTP, Google, Facebook, Apple via web flow)
-- **iOS**: Full support (All providers including native Apple Sign-In)
-- **Web**: Full support (All providers via web OAuth)
-- **macOS**: Full support
-- **Windows/Linux**: Limited (Email/password, Google web flow)
+### 1. Email Verification
 
-## Security Highlights
+**Enforce for sensitive actions**:
+- Check `user.emailVerified` before:
+  - Changing password
+  - Deleting account
+  - Accessing sensitive data
 
-- **Secure Token Storage**: Use secure storage for sensitive tokens
-- **Token Refresh**: Automatic refresh before expiry
-- **Re-authentication**: Enforce for sensitive operations (password change, account deletion)
-- **Email Verification**: Require for accessing sensitive features
-- **Rate Limiting**: Prevent brute force attacks
-- **MFA Support**: Multi-factor authentication for enhanced security
-- **HTTPS Only**: All network communication encrypted
-- **GDPR Compliance**: Account deletion, data export support
+**Send verification**:
+- After sign-up
+- After email change
+- Allow resend (with rate limit)
 
-## Best Practices
+### 2. Password Requirements
 
-### Security
+**Minimum requirements**:
+- At least 8 characters
+- At least one uppercase letter
+- At least one lowercase letter
+- At least one number
+- Optional: One special character
 
-- Enforce strong password policies (8+ chars, mix of types)
-- Require email verification before full access
-- Implement re-authentication for sensitive actions
-- Use HTTPS for all backend communication
-- Never log sensitive auth tokens
-- Implement rate limiting and CAPTCHA
+**Show strength indicator**:
+- Weak: Less than 8 chars
+- Medium: Meets minimums
+- Strong: 12+ chars with special chars
 
-### UX
+### 3. Re-authentication
 
-- Provide clear error messages with recovery steps
-- Support password managers (autofill)
-- Show password strength indicator
-- Offer "Remember me" option
-- Support biometric authentication on devices that have it
-- Handle offline gracefully (queue operations)
+**When required**:
+- Before password change
+- Before email change
+- Before account deletion
+- Before linking new provider
 
-### Performance
+**How**:
+- User enters current password
+- Call `reauthenticateWithCredential(credential)`
+- Then perform sensitive action
+- If error: Show "Incorrect password"
 
-- Cache user profile data locally
-- Implement token refresh in background
-- Use streams for auth state (reactive updates)
-- Minimize network calls (batch when possible)
+### 4. Rate Limiting
+
+**Firebase built-in**:
+- Too many sign-in attempts: Temporary block
+- Too many password resets: Rate limited
+- SMS OTP: Limited sends per day
+
+**App-side**:
+- Disable button after click (prevent double-submit)
+- Show loading state
+- Implement exponential backoff on errors
+
+### 5. Token Security
+
+**ID Tokens**:
+- Short-lived (1 hour)
+- Auto-refresh by Firebase
+- Never log or expose tokens
+- Send to backend for verification
+
+**Custom Claims** (Backend):
+- Set user roles/permissions
+- Verified by backend
+- Reflected in token
+- Refresh token to get new claims
 
 ## Testing
 
-### Required Tests
+### Test Accounts
 
-- [ ] Email sign-up creates user and sends verification
-- [ ] Password reset email sent and works
-- [ ] Sign-in with wrong password shows error
-- [ ] Social sign-in (Google, Apple, Facebook) works
-- [ ] Account linking merges providers
-- [ ] Sign-out clears session completely
-- [ ] Token refresh works before expiry
-- [ ] Expired token forces re-login
-- [ ] Email verification required for sensitive actions
-- [ ] Re-authentication enforced where needed
+**Firebase Test Mode**:
+1. In Firebase Console → Authentication → Settings
+2. Add test phone numbers:
+   - Phone: +1234567890
+   - Code: 123456
+3. Use these for testing without SMS charges
 
-### Manual Testing
+### Test Scenarios
 
-- Test on real devices (iOS, Android)
-- Test all sign-in methods
-- Test account linking scenarios
-- Test password reset end-to-end
-- Test offline behavior
-- Test multi-device sessions
-- Test token revocation
+**Email/Password**:
+- [ ] Sign up with valid email/password
+- [ ] Sign up with existing email (should fail)
+- [ ] Sign in with correct credentials
+- [ ] Sign in with wrong password (should fail)
+- [ ] Send password reset email
+- [ ] Verify email works
 
-## Monitoring
+**Social Sign-In**:
+- [ ] Sign in with Google
+- [ ] Sign in with Apple (iOS)
+- [ ] Sign in with Facebook
+- [ ] Handle cancelled sign-in
 
-Track these metrics:
+**Account Linking**:
+- [ ] Link Google to email account
+- [ ] Link Apple to existing account
+- [ ] Handle email collision
+- [ ] Unlink provider
 
-- **Sign-up success rate**: Monitor registration funnel
-- **Sign-in success/failure counts**: Detect authentication issues
-- **Password reset requests**: Track account recovery usage
-- **Account linking events**: Monitor multi-provider usage
-- **Token refresh errors**: Detect session management issues
-- **Failed login attempts**: Detect potential security threats
+**Session**:
+- [ ] Session persists after app restart
+- [ ] Sign out clears session
+- [ ] Token refresh works
 
-## Troubleshooting
+**Errors**:
+- [ ] Invalid email shows error
+- [ ] Weak password shows error
+- [ ] Network error handled gracefully
 
-Common issues and quick fixes:
+## Common Issues
 
-| Issue | Solution |
-|-------|----------|
-| "SHA fingerprint mismatch" (Android) | Add all SHA-1/SHA-256 fingerprints to Firebase Console |
-| "GoogleService-Info.plist not found" (iOS) | Download from Firebase Console, add to Xcode project root |
-| "Account exists with different credential" | Implement account linking flow |
-| "OTP not received" (Phone auth) | Check Firebase usage limits, phone number format, region support |
-| "Social sign-in fails" | Verify OAuth client IDs, redirect URIs, bundle IDs match |
+### Android
 
-See [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for complete guide.
+**SHA fingerprint mismatch**:
+- Run `./gradlew signingReport` in `android/`
+- Copy SHA-1 and SHA-256
+- Add to Firebase Console → Project Settings → Your apps
+- Add for both debug and release
+
+**Google Sign-In fails**:
+- Check SHA-1 added to Firebase
+- Check package name matches
+- Re-download google-services.json after changes
+- Clean and rebuild: `flutter clean && flutter run`
+
+### iOS
+
+**GoogleService-Info.plist not found**:
+- Download from Firebase Console
+- Drag into Xcode (not just file system)
+- Check "Copy items if needed"
+- Verify it's in project root, not subfolder
+
+**Apple Sign-In fails**:
+- Check Sign in with Apple capability enabled in Xcode
+- Check bundle ID matches in Firebase and Apple Developer
+- Verify Service ID and Key ID configured in Firebase
+
+### Web
+
+**OAuth fails on localhost**:
+- Firebase Console → Authentication → Settings → Authorized domains
+- Add `localhost` if not present
+- For production, add your domain
+
+**Redirect issues**:
+- Use `signInWithPopup()` for popup flow
+- Use `signInWithRedirect()` for redirect flow
+- Redirect is better for mobile browsers
+
+## Project Structure
+
+```
+lib/
+├── main.dart
+├── services/
+│   ├── auth_service.dart          # Main auth logic
+│   ├── auth_error_handler.dart    # Error mapping
+│   └── validators.dart             # Email/password validation
+├── models/
+│   ├── user_model.dart             # User data model
+│   └── auth_result.dart            # Sign-in result wrapper
+├── screens/
+│   ├── auth/
+│   │   ├── sign_in_screen.dart
+│   │   ├── sign_up_screen.dart
+│   │   ├── forgot_password_screen.dart
+│   │   ├── email_verification_screen.dart
+│   │   └── profile_screen.dart
+│   └── home_screen.dart
+├── widgets/
+│   ├── auth_text_field.dart        # Reusable input field
+│   ├── auth_button.dart            # Styled button
+│   └── social_sign_in_buttons.dart # Google/Apple/Facebook buttons
+└── utils/
+    └── auth_state_wrapper.dart     # Wraps app, routes based on auth
+```
+
+## Quick Reference
+
+### Firebase Auth Methods
+
+- `createUserWithEmailAndPassword(email, password)` - Sign up
+- `signInWithEmailAndPassword(email, password)` - Sign in
+- `signInWithCredential(credential)` - Sign in with provider
+- `sendPasswordResetEmail(email)` - Send reset email
+- `sendEmailVerification()` - Send verification email
+- `signOut()` - Sign out
+- `currentUser` - Get current user (null if not signed in)
+- `authStateChanges()` - Stream of auth state changes
+- `linkWithCredential(credential)` - Link provider
+- `unlink(providerId)` - Unlink provider
+- `reauthenticateWithCredential(credential)` - Re-auth for sensitive ops
+
+### User Properties
+
+- `uid` - Unique user ID
+- `email` - User email
+- `displayName` - User display name
+- `photoURL` - Profile photo URL
+- `emailVerified` - Email verification status
+- `phoneNumber` - Phone number
+- `providerData` - List of linked providers
 
 ## Next Steps
 
-1. Read [FIREBASE_SETUP.md](docs/FIREBASE_SETUP.md) to configure Firebase Console
-2. Review [PLATFORM_INTEGRATION.md](docs/PLATFORM_INTEGRATION.md) for platform setup
-3. Study [AUTHENTICATION_FLOWS.md](docs/AUTHENTICATION_FLOWS.md) for implementation patterns
-4. Follow [SECURITY_GUIDE.md](docs/SECURITY_GUIDE.md) for security best practices
-5. Implement using patterns from [ARCHITECTURE.md](docs/ARCHITECTURE.md)
-6. Test using [TESTING_GUIDE.md](docs/TESTING_GUIDE.md) strategies
+1. **Set up Firebase project** (Console configuration)
+2. **Add platform configs** (google-services.json, GoogleService-Info.plist)
+3. **Add dependencies** to pubspec.yaml
+4. **Initialize Firebase** in main()
+5. **Create AuthService** with methods
+6. **Build UI screens** (sign-in, sign-up, etc.)
+7. **Handle auth state** (route based on signed-in status)
+8. **Test all flows** (sign-up, sign-in, reset, linking)
+9. **Add error handling** (user-friendly messages)
+10. **Deploy and monitor**
 
-## License
-
-MIT License - See LICENSE file
-
-## Support
-
-For issues and questions:
-- Review documentation in `docs/` folder
-- Check [TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for common problems
-- See [REAL_WORLD_EXAMPLES.md](docs/REAL_WORLD_EXAMPLES.md) for implementation scenarios
+That's it! Follow these patterns and you'll have working authentication in 30-60 minutes.
 
 ---
 
 **Version**: 1.0.0
 **Last Updated**: 2025-11-13
-**Status**: Production-Ready Design Specification
-**No Code**: This is a design guide - implementation is up to the developer
+**Type**: Simple Implementation Guide
