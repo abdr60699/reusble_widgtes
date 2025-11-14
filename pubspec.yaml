@@ -30,6 +30,12 @@ dependencies:
   # Firebase Cloud Messaging (Push Notifications)
   firebase_messaging: ^16.0.4
 
+  # Firebase Analytics (for Analytics & Logging module)
+  firebase_analytics: ^11.0.0
+
+  # Firebase Crashlytics (for Analytics & Logging module)
+  firebase_crashlytics: ^4.0.0
+
   # ===== Social Authentication Providers =====
   # Google Sign-In
   google_sign_in: ^6.1.5
@@ -72,6 +78,10 @@ dependencies:
 
   # Dio HTTP client (for API Client module)
   dio: ^5.4.0
+
+  # ===== Error Reporting =====
+  # Sentry error tracking (for Analytics & Logging module)
+  sentry_flutter: ^7.0.0
 
   # ===== Theming & UI =====
   # Material 3 dynamic colors (wallpaper-based theming)
