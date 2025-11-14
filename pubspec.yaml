@@ -91,6 +91,10 @@ dependencies:
   # Material 3 dynamic colors (wallpaper-based theming)
   dynamic_color: ^1.7.0
 
+  # ===== State Management =====
+  # Riverpod for theme management
+  flutter_riverpod: ^2.4.9
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
