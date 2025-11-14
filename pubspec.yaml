@@ -99,6 +99,12 @@ dependencies:
   # UUID generation (for transaction IDs)
   # uuid: ^4.2.1
 
+  # ===== UPI Payment Integration (India-specific) =====
+  # NOTE: UPI module requires Android platform code setup
+  # See: lib/features/upi_payment/PROCESS_SETUP.md
+  # Uncomment uuid when using UPI payment module:
+  # uuid: ^4.2.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
