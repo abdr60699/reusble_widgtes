@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 /// Design tokens for icon sizes and elevations
 /// Provides consistent icon sizing and shadow elevations across the app
@@ -171,4 +172,4 @@ class ThemeIcons {
 }
 
 /// Import math for logarithm calculation
-import 'dart:math' as math;
+
