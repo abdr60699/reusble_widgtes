@@ -2,6 +2,22 @@
 
 Production-ready, reusable onboarding module for Flutter apps. Provides intro sliders, app walkthroughs, customizable templates, and persistent completion tracking.
 
+## 📋 Integration Checklist
+
+Follow these steps to add onboarding to your Flutter app (5 minutes):
+
+- [ ] **Step 1:** Import the module: `import 'package:reuablewidgets/features/onboarding/onboarding.dart';`
+- [ ] **Step 2:** Initialize service in `main.dart`: `final service = OnboardingService(); await service.initialize();`
+- [ ] **Step 3:** Check if should show: `await service.shouldShowOnboarding()`
+- [ ] **Step 4:** Create your pages with `OnboardingPage.withIcon()` or templates
+- [ ] **Step 5:** Show `OnboardingScreen` with config and service
+- [ ] **Step 6:** Navigate to home on `onComplete` callback
+- [ ] **Step 7:** Test by running your app (should show once, then never again)
+
+**Need detailed instructions?** See [SETUP_GUIDE.md](SETUP_GUIDE.md) for step-by-step integration guide.
+
+**Need code examples?** See [EXAMPLE.md](EXAMPLE.md) for complete working examples.
+
 ## Features
 
 - **Intro Slider** - Multi-screen onboarding with swipe navigation
@@ -631,8 +647,38 @@ No additional dependencies required!
 
 This module is part of the reusable_widgets project.
 
-## Support
+## 📚 Documentation
 
-For complete technical specification, see [SPECIFICATION.md](SPECIFICATION.md).
+- **[SETUP_GUIDE.md](SETUP_GUIDE.md)** - Complete step-by-step integration guide
+- **[EXAMPLE.md](EXAMPLE.md)** - Full code examples and patterns
+- **[README.md](README.md)** - This file - usage and API reference
 
-For integration examples, see [EXAMPLE.md](EXAMPLE.md).
+## 🐛 Troubleshooting
+
+**Onboarding shows every time?**
+- Make sure you're passing `onboardingService` to `OnboardingScreen`
+- Check that service is initialized before use
+
+**Can't import the module?**
+- Verify path: `import 'package:reuablewidgets/features/onboarding/onboarding.dart';`
+
+**Images not loading?**
+- Add assets to `pubspec.yaml`: `assets: - assets/images/`
+- Run `flutter pub get`
+
+**More issues?** See the [Troubleshooting section in SETUP_GUIDE.md](SETUP_GUIDE.md#troubleshooting)
+
+## 🎯 Quick Links
+
+| What you need | Where to find it |
+|--------------|------------------|
+| **First time setup** | [SETUP_GUIDE.md](SETUP_GUIDE.md) |
+| **Code examples** | [EXAMPLE.md](EXAMPLE.md) |
+| **Templates** | [OnboardingTemplates section](#using-templates) |
+| **Customization** | [Configuration Options](#configuration-options) |
+| **Testing** | [SETUP_GUIDE.md - Testing](SETUP_GUIDE.md#testing) |
+| **Troubleshooting** | [SETUP_GUIDE.md - Troubleshooting](SETUP_GUIDE.md#troubleshooting) |
+
+## License
+
+This module is part of the reusable_widgets project.
