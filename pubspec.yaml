@@ -91,6 +91,9 @@ dependencies:
   # Riverpod for theme management
   flutter_riverpod: ^2.4.9
 
+  # GetIt for dependency injection
+  get_it: ^7.6.4
+
   # ===== Payment Integration (Uncomment as needed) =====
   # Stripe payment processing
   # flutter_stripe: ^10.0.0
@@ -135,6 +138,9 @@ dev_dependencies:
 
   # HTTP mocking for API Client testing
   http_mock_adapter: ^0.6.0
+
+  # Mocking for unit tests
+  mocktail: ^1.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
