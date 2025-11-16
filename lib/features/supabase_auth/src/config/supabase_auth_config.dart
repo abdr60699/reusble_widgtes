@@ -1,4 +1,4 @@
-import 'social_provider.dart';
+
 
 /// Password validation requirements
 class PasswordRequirements {
