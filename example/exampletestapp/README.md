@@ -165,6 +165,19 @@ ReusableAppBar(
 )
 ```
 
+## App Customization
+
+Want to customize the app name, icon, or splash screen? See the complete guide:
+
+**[📱 APP_CUSTOMIZATION_GUIDE.md](APP_CUSTOMIZATION_GUIDE.md)**
+
+This guide covers:
+- Changing app name for all platforms
+- Adding custom app icon (with flutter_launcher_icons)
+- Creating splash screens (with flutter_native_splash)
+- Manual setup for each platform
+- Best practices and troubleshooting
+
 ## Development Workflow
 
 ### Hot Reload
