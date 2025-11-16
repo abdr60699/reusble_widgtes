@@ -83,6 +83,25 @@ dependencies:
   # Sentry error tracking (for Analytics & Logging module)
   sentry_flutter: ^7.0.0
 
+  # ===== AI/ML Packages =====
+  # TensorFlow Lite for on-device ML
+  tflite_flutter: ^0.10.4
+
+  # Google ML Kit for OCR and object detection
+  google_ml_kit: ^0.18.0
+
+  # Image processing utilities
+  image: ^4.1.7
+
+  # SQLite for vector store
+  sqflite: ^2.3.2
+
+  # Vector math operations
+  vector_math: ^2.1.4
+
+  # Crypto for model verification
+  crypto: ^3.0.3
+
   # ===== Theming & UI =====
   # Material 3 dynamic colors (wallpaper-based theming)
   dynamic_color: ^1.7.0
@@ -154,9 +173,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - lib/features/ai_ml/assets/models/
+    - lib/features/ai_ml/assets/models/manifest.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
