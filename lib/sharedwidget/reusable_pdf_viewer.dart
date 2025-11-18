@@ -15,23 +15,26 @@ class ReusablePdfViewer extends StatefulWidget {
 }
 
 class _ReusablePdfViewerState extends State<ReusablePdfViewer> {
-  PdfControllerPinch? _controller;
+  late PdfControllerPinch _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = widget.fromAsset ? PdfControllerPinch(asset: widget.assetOrUrl) : PdfControllerPinch(document: PdfDocument.openData(Uri.parse(widget.assetOrUrl).readAsBytesSync()));
+    _controller = PdfControllerPinch(
+      document: widget.fromAsset
+        ? PdfDocument.openAsset(widget.assetOrUrl)
+        : PdfDocument.openData(Uri.parse(widget.assetOrUrl).readAsBytes()),
+    );
   }
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_controller == null) return const Center(child: CircularProgressIndicator());
-    return PdfViewPinch(controller: _controller!);
+    return PdfViewPinch(controller: _controller);
   }
 }

@@ -11,7 +11,7 @@ class ReusableCounterCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(padding: EdgeInsets.all(12), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(title, style: Theme.of(context).textTheme.subtitle2),
+        Text(title, style: Theme.of(context).textTheme.titleSmall),
         SizedBox(height: 8),
         TweenAnimationBuilder<int>(
           tween: IntTween(begin: 0, end: count),

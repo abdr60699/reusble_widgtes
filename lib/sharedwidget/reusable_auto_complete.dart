@@ -47,7 +47,7 @@ class _ReusableAutoCompleteState<T> extends State<ReusableAutoComplete<T>> {
   Widget build(BuildContext context) {
     return Autocomplete<T>(
       optionsBuilder: (textEditingValue) async {
-        if (textEditingValue.text == '') return const Iterable<T>.empty();
+        if (textEditingValue.text == '') return <T>[];
         final list = await _getSuggestions(textEditingValue.text);
         return list;
       },

@@ -22,10 +22,17 @@ class ReusableQRGenerator extends StatelessWidget {
     return Container(
       color: backgroundColor ?? Colors.white,
       padding: const EdgeInsets.all(8),
-      child: QrImage(
+      child: QrImageView(
         data: data,
         size: size,
-        foregroundColor: foregroundColor ?? Theme.of(context).colorScheme.onSurface,
+        eyeStyle: QrEyeStyle(
+          eyeShape: QrEyeShape.square,
+          color: foregroundColor ?? Theme.of(context).colorScheme.onSurface,
+        ),
+        dataModuleStyle: QrDataModuleStyle(
+          dataModuleShape: QrDataModuleShape.square,
+          color: foregroundColor ?? Theme.of(context).colorScheme.onSurface,
+        ),
       ),
     );
   }

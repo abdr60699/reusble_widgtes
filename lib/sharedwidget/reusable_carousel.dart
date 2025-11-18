@@ -23,13 +23,12 @@ class ReusableCarousel extends StatefulWidget {
 class _ReusableCarouselState extends State<ReusableCarousel> {
   final PageController _controller = PageController();
   int _index = 0;
-  late final ticker;
 
   @override
   void initState() {
     super.initState();
     if (widget.autoPlay) {
-      ticker = WidgetsBinding.instance.addPostFrameCallback((_) => _startAutoPlay());
+      WidgetsBinding.instance.addPostFrameCallback((_) => _startAutoPlay());
     }
   }
 

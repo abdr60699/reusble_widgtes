@@ -1,5 +1,46 @@
 import 'package:flutter/material.dart';
+import 'reusable_dialog.dart';
+import 'reusable_confirmation_dialog.dart';
+import 'reusable_banner.dart';
+import 'reusable_status_banner.dart';
+import 'reusable_tooltip.dart';
+import 'reusable_notification_badge.dart';
 
+// Simple bottom sheet wrapper
+class ReusableBottomSheet {
+  static Future<T?> show<T>({
+    required BuildContext context,
+    required Widget child,
+  }) {
+    return showModalBottomSheet<T>(
+      context: context,
+      builder: (_) => child,
+    );
+  }
+}
+
+// Simple alert dialog wrapper
+class ReusableAlertDialog {
+  static Future<void> showOk({
+    required BuildContext context,
+    String title = 'Alert',
+    required String message,
+  }) {
+    return showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 void main() {
   runApp(const DemoApp());
