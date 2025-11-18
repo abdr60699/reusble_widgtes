@@ -79,6 +79,9 @@ dependencies:
   # Dio HTTP client (for API Client module)
   dio: ^5.4.0
 
+  # MIME type detection
+  mime: ^1.0.4
+
   # ===== Error Reporting =====
   # Sentry error tracking (for Analytics & Logging module)
   sentry_flutter: ^7.0.0
