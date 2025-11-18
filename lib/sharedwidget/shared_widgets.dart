@@ -25,7 +25,6 @@ export 'reusable_icon_button.dart';
 export 'reusable_image.dart';
 export 'reusable_radiogroup.dart';
 export 'reusable_refresh_indicator.dart';
-export 'reusable_scaffold.dart';
 export 'reusable_shimmer.dart';
 export 'reusable_stepper.dart';
 export 'reusable_svg_icon.dart';

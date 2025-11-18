@@ -22,29 +22,29 @@ dependencies:
 
   # ===== Firebase Packages =====
   # Core Firebase (required for all Firebase services)
-  firebase_core: ^4.2.1
+  firebase_core:
 
   # Firebase Authentication
-  firebase_auth: ^6.1.2
+  firebase_auth:
 
   # Firebase Cloud Messaging (Push Notifications)
-  firebase_messaging: ^16.0.4
+  firebase_messaging:
 
   # Firebase Analytics (for Analytics & Logging module)
-  firebase_analytics: ^11.0.0
+  firebase_analytics:
 
   # Firebase Crashlytics (for Analytics & Logging module)
-  firebase_crashlytics: ^4.0.0
+  firebase_crashlytics:
 
   # ===== Social Authentication Providers =====
   # Google Sign-In
-  google_sign_in: ^6.1.5
+  google_sign_in:
 
   # Apple Sign-In
-  sign_in_with_apple: ^5.0.0
+  sign_in_with_apple:
 
   # Facebook Login
-  flutter_facebook_auth: ^6.0.3
+  flutter_facebook_auth:
 
   # ===== Supabase Backend =====
   # Supabase Client (includes Auth, Database, Storage)
@@ -112,6 +112,11 @@ dependencies:
 
   # GetIt for dependency injection
   get_it: ^7.6.4
+  image_picker: ^1.1.2
+  flutter_image_compress: ^2.4.0
+  audio_player_plus: ^0.2.0
+  audioplayers: ^6.4.0
+  camera: ^0.11.0+2
 
   # ===== Payment Integration (Uncomment as needed) =====
   # Stripe payment processing
