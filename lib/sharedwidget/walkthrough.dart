@@ -32,7 +32,9 @@ class _ReusableWalkthroughState extends State<ReusableWalkthrough> {
     if (widget.steps.isEmpty) return SizedBox.shrink();
     final step = widget.steps[_index];
     final renderBox = step.key.currentContext?.findRenderObject() as RenderBox?;
-    final rect = renderBox?.localToGlobal(Offset.zero) & (renderBox?.size ?? Size.zero);
+    final offset = renderBox?.localToGlobal(Offset.zero);
+    final size = renderBox?.size;
+    final rect = (offset != null && size != null) ? offset & size : null;
     return Stack(children: [
       // dark overlay
       Positioned.fill(child: GestureDetector(onTap: _next, child: Container(color: Colors.black54))),

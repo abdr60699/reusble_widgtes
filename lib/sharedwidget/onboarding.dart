@@ -35,7 +35,7 @@ class _ReusableOnboardingState extends State<ReusableOnboarding> {
             return Padding(padding: EdgeInsets.all(24), child: Column(children: [
               Expanded(child: p.content),
               SizedBox(height: 12),
-              Text(p.title, style: Theme.of(context).textTheme.headline6),
+              Text(p.title, style: Theme.of(context).textTheme.titleLarge),
               if (p.subtitle != null) Text(p.subtitle!)
             ]));
           },
@@ -43,7 +43,7 @@ class _ReusableOnboardingState extends State<ReusableOnboarding> {
       ),
       Padding(padding: EdgeInsets.all(12), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         TextButton(onPressed: () { _controller.jumpToPage(widget.pages.length -1); }, child: Text('Skip')),
-        Row(children: List.generate(widget.pages.length, (i) => Container(margin: EdgeInsets.symmetric(horizontal:4), width: _index==i?18:8, height:8, decoration: BoxDecoration(color: _index==i?Colors.blue:Colors.grey, borderRadius: BorderRadius.circular(8)))),
+        Row(children: [...List.generate(widget.pages.length, (i) => Container(margin: EdgeInsets.symmetric(horizontal:4), width: _index==i?18:8, height:8, decoration: BoxDecoration(color: _index==i?Colors.blue:Colors.grey, borderRadius: BorderRadius.circular(8))))]),
         ElevatedButton(onPressed: () { if (_index == widget.pages.length -1) { widget.onFinish?.call(); } else { _controller.nextPage(duration: Duration(milliseconds:300), curve: Curves.easeInOut); } }, child: Text(_index==widget.pages.length-1? 'Finish' : 'Next')),
       ]))
     ]);

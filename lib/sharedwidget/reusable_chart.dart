@@ -14,7 +14,7 @@ class ReusableChart extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (title != null) Padding(padding: EdgeInsets.only(bottom:8), child: Text(title!, style: Theme.of(context).textTheme.subtitle1)),
+        if (title != null) Padding(padding: EdgeInsets.only(bottom:8), child: Text(title!, style: Theme.of(context).textTheme.titleMedium)),
         SizedBox(
           height: height,
           child: CustomPaint(

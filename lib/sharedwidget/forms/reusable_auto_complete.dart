@@ -47,7 +47,7 @@ class ReusableAutoComplete<T extends Object> extends StatelessWidget {
     return Autocomplete<T>(
       optionsBuilder: (TextEditingValue textEditingValue) {
         if (textEditingValue.text.isEmpty) {
-          return const Iterable<T>.empty();
+          return <T>[];
         }
         return options.where((T option) {
           final String displayString = displayStringForOption != null

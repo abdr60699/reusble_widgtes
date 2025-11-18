@@ -38,7 +38,7 @@ class ReusableDataGrid extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(item['title']?.toString() ?? 'Item', style: Theme.of(context).textTheme.subtitle1),
+                Text(item['title']?.toString() ?? 'Item', style: Theme.of(context).textTheme.titleMedium),
                 SizedBox(height: 8),
                 Expanded(child: Text(item['subtitle']?.toString() ?? '', overflow: TextOverflow.ellipsis)),
                 SizedBox(height: 8),

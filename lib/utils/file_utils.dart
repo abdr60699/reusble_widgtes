@@ -26,7 +26,7 @@ class FileUtils {
   static Future<File?> compressImage(File file,
       {int quality = 80}) async {
     final target = file.path.replaceAll('.', '_compressed.');
-    final result = await FlutterImageCompress.compressAndGetFile(
+    final XFile? result = await FlutterImageCompress.compressAndGetFile(
       file.absolute.path,
       target,
       quality: quality,

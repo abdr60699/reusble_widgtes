@@ -5,7 +5,7 @@ class ReusableCalendar extends StatelessWidget {
   final DateTime month;
   final void Function(DateTime)? onDayTap;
 
-  const ReusableCalendar({Key? key, DateTime? month, this.onDayTap}) : month = month ??  DateTime.now(), super(key: key);
+  ReusableCalendar({Key? key, DateTime? month, this.onDayTap}) : month = month ??  DateTime.now(), super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ReusableCalendar extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical:8.0),
-          child: Text(DateFormat.yMMMM().format(month), style: Theme.of(context).textTheme.subtitle1),
+          child: Text(DateFormat.yMMMM().format(month), style: Theme.of(context).textTheme.titleMedium),
         ),
         GridView.builder(
           shrinkWrap: true,

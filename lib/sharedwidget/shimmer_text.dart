@@ -29,7 +29,7 @@ class _ReusableShimmerTextState extends State<ReusableShimmerText> with SingleTi
   @override
   Widget build(BuildContext context) {
     final text = widget.text;
-    final style = widget.style ?? Theme.of(context).textTheme.headline6;
+    final style = widget.style ?? Theme.of(context).textTheme.titleLarge;
     return AnimatedBuilder(
       animation: _controller,
       builder: (context, child) {
