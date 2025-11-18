@@ -30,6 +30,7 @@ export 'buttons/button_widgets.dart';
 export 'feedback/feedback_widgets.dart';
 export 'forms/form_widgets.dart';
 export 'layout/layout_widgets.dart';
+export 'media/media_widgets.dart';
 export 'navigation/navigation_widgets.dart';
 // Export all reusable widgets
 export 'reusable_animated_switcher.dart';

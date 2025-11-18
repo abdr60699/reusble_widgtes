@@ -118,6 +118,28 @@ dependencies:
   audioplayers: ^6.4.0
   camera: ^0.11.0+2
 
+  # ===== Media & UI Packages =====
+  # QR Code generation
+  qr_flutter: ^4.1.0
+
+  # Carousel slider
+  carousel_slider: ^4.2.1
+
+  # Charts
+  fl_chart: ^0.66.0
+
+  # PDF viewing (optional - uncomment when needed)
+  # pdfx: ^2.6.0
+
+  # QR/Barcode scanning (optional - uncomment when needed)
+  # mobile_scanner: ^4.0.1
+
+  # Image cropping (optional - uncomment when needed)
+  # image_cropper: ^5.0.1
+
+  # Video player (optional - uncomment when needed)
+  # video_player: ^2.8.2
+
   # ===== Payment Integration (Uncomment as needed) =====
   # Stripe payment processing
   # flutter_stripe: ^10.0.0
