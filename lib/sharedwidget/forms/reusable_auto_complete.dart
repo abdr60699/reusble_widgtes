@@ -1,83 +1,84 @@
+
+// reusable_auto_complete.dart
+// Wrapper around Flutter's Autocomplete with simple configuration
 import 'package:flutter/material.dart';
 
-/// A reusable autocomplete widget with search and suggestions.
-///
-/// This widget provides type-ahead functionality with customizable options.
-/// Supports both String and custom objects with a display builder.
-///
-/// Example:
-/// ```dart
-/// ReusableAutoComplete<String>(
-///   options: ['Apple', 'Banana', 'Cherry'],
-///   onSelected: (value) => print('Selected: $value'),
-///   labelText: 'Search fruits',
-/// )
-/// ```
-class ReusableAutoComplete<T extends Object> extends StatelessWidget {
-  /// List of options to display in suggestions
-  final List<T> options;
+typedef SuggestionCallback<T> = Future<List<T>> Function(String query);
 
-  /// Callback when an option is selected
-  final Function(T) onSelected;
-
-  /// How to display each option (for custom objects)
-  final String Function(T)? displayStringForOption;
-
-  /// Label text for the field
-  final String? labelText;
-
-  /// Hint text
-  final String? hintText;
-
-  /// Prefix icon
-  final IconData? prefixIcon;
+class ReusableAutoComplete<T> extends StatefulWidget {
+  final List<T>? options; // optional local options
+  final SuggestionCallback<T>? suggestionsCallback; // async suggestions
+  final String Function(T) displayStringForOption;
+  final ValueChanged<T>? onSelected;
+  final InputDecoration? decoration;
 
   const ReusableAutoComplete({
-    super.key,
-    required this.options,
-    required this.onSelected,
-    this.displayStringForOption,
-    this.labelText,
-    this.hintText,
-    this.prefixIcon,
-  });
+    Key? key,
+    this.options,
+    this.suggestionsCallback,
+    required this.displayStringForOption,
+    this.onSelected,
+    this.decoration,
+  }) : assert(options != null || suggestionsCallback != null, 'Either options or suggestionsCallback must be provided'),
+       super(key: key);
+
+  @override
+  State<ReusableAutoComplete<T>> createState() => _ReusableAutoCompleteState<T>();
+}
+
+class _ReusableAutoCompleteState<T> extends State<ReusableAutoComplete<T>> {
+  late final TextEditingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  Future<List<T>> _getSuggestions(String query) async {
+    if (widget.suggestionsCallback != null) {
+      return await widget.suggestionsCallback!(query);
+    }
+    final q = query.toLowerCase();
+    return widget.options!.where((o) => widget.displayStringForOption(o).toLowerCase().contains(q)).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Autocomplete<T>(
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text.isEmpty) {
-          return <T>[];
-        }
-        return options.where((T option) {
-          final String displayString = displayStringForOption != null
-              ? displayStringForOption!(option)
-              : option.toString();
-          return displayString
-              .toLowerCase()
-              .contains(textEditingValue.text.toLowerCase());
-        });
+      optionsBuilder: (textEditingValue) async {
+        if (textEditingValue.text == '') return <T>[];
+        final list = await _getSuggestions(textEditingValue.text);
+        return list;
       },
-      displayStringForOption: displayStringForOption ?? (T option) => option.toString(),
-      onSelected: onSelected,
-      fieldViewBuilder: (
-        BuildContext context,
-        TextEditingController textEditingController,
-        FocusNode focusNode,
-        VoidCallback onFieldSubmitted,
-      ) {
-        return TextFormField(
-          controller: textEditingController,
+      displayStringForOption: widget.displayStringForOption,
+      fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) {
+        controller.text = _controller.text;
+        controller.selection = _controller.selection;
+        controller.addListener(() {
+          _controller.text = controller.text;
+          _controller.selection = controller.selection;
+        });
+        return TextField(
+          controller: controller,
           focusNode: focusNode,
-          decoration: InputDecoration(
-            labelText: labelText,
-            hintText: hintText,
-            prefixIcon: prefixIcon != null ? Icon(prefixIcon) : null,
-            border: const OutlineInputBorder(),
+          decoration: widget.decoration ?? const InputDecoration(),
+        );
+      },
+      onSelected: widget.onSelected,
+      optionsViewBuilder: (context, onSelected, options) {
+        return Material(
+          elevation: 4,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            children: options.map((opt) {
+              return ListTile(
+                title: Text(widget.displayStringForOption(opt)),
+                onTap: () => onSelected(opt),
+              );
+            }).toList(),
           ),
-          onFieldSubmitted: (String value) {
-            onFieldSubmitted();
-          },
         );
       },
     );

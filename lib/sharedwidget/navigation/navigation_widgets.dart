@@ -1,10 +1,10 @@
-/// Navigation Components
-///
-/// This library exports navigation widgets like app bars,
-/// bottom navigation, drawers, and tab bars.
-library navigation_widgets;
-
-export 'reusable_app_bar.dart';
-export 'reusable_bottom_nav_bar.dart';
-export 'reusable_drawer.dart';
-export 'reusable_tab_bar.dart';
+export 'navigation/onboarding.dart';
+export 'navigation/reusable_app_bar.dart';
+export 'navigation/reusable_bottom_nav_bar.dart';
+export 'navigation/reusable_breadcrumb.dart';
+export 'navigation/reusable_drawer.dart';
+export 'navigation/reusable_navigation_rail.dart';
+export 'navigation/reusable_page_indicator.dart';
+export 'navigation/reusable_side_menu.dart';
+export 'navigation/reusable_tab_bar.dart';
+export 'navigation/walkthrough.dart';

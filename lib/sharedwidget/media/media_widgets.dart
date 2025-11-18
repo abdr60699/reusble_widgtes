@@ -1,8 +1,8 @@
-/// Media Components
-///
-/// This library exports media-related widgets like image pickers,
-/// QR generators, PDF viewers, etc.
-library media_widgets;
-
-export 'reusable_pdf_viewer.dart';
-export 'reusable_qr_generator.dart';
+export 'media/reusable_audio_player.dart';
+export 'media/reusable_image_cropper.dart';
+export 'media/reusable_image_gallery.dart';
+export 'media/reusable_image_viewer.dart';
+export 'media/reusable_pdf_viewer.dart';
+export 'media/reusable_qr_generator.dart';
+export 'media/reusable_qr_scanner.dart';
+export 'media/reusable_video_player.dart';

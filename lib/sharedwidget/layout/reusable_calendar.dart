@@ -1,131 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-/// A reusable calendar widget for date selection and display.
-///
-/// Provides a simple calendar view with customizable appearance
-/// and date selection functionality.
-///
-/// Example:
-/// ```dart
-/// ReusableCalendar(
-///   selectedDate: DateTime.now(),
-///   onDateSelected: (date) => print('Selected: $date'),
-///   minDate: DateTime(2020),
-///   maxDate: DateTime(2030),
-/// )
-/// ```
-class ReusableCalendar extends StatefulWidget {
-  /// Currently selected date
-  final DateTime? selectedDate;
+class ReusableCalendar extends StatelessWidget {
+  final DateTime month;
+  final void Function(DateTime)? onDayTap;
 
-  /// Callback when date is selected
-  final Function(DateTime) onDateSelected;
-
-  /// Minimum selectable date
-  final DateTime? minDate;
-
-  /// Maximum selectable date
-  final DateTime? maxDate;
-
-  /// Highlighted dates (special dates to mark)
-  final List<DateTime>? highlightedDates;
-
-  /// Color for highlighted dates
-  final Color? highlightColor;
-
-  const ReusableCalendar({
-    super.key,
-    this.selectedDate,
-    required this.onDateSelected,
-    this.minDate,
-    this.maxDate,
-    this.highlightedDates,
-    this.highlightColor,
-  });
-
-  @override
-  State<ReusableCalendar> createState() => _ReusableCalendarState();
-}
-
-class _ReusableCalendarState extends State<ReusableCalendar> {
-  late DateTime _focusedMonth;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusedMonth = widget.selectedDate ?? DateTime.now();
-  }
+  ReusableCalendar({Key? key, DateTime? month, this.onDayTap}) : month = month ??  DateTime.now(), super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+    final first = DateTime(month.year, month.month, 1);
+    final daysInMonth = DateTime(month.year, month.month+1, 0).day;
+    final weekdayOffset = first.weekday % 7; // make Sunday=0
+    final totalCells = weekdayOffset + daysInMonth;
+    final rows = (totalCells / 7).ceil();
+    final days = List<DateTime?>.generate(rows*7, (i) {
+      final dayIndex = i - weekdayOffset + 1;
+      if (dayIndex < 1 || dayIndex > daysInMonth) return null;
+      return DateTime(month.year, month.month, dayIndex);
+    });
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
       children: [
-        // Month/Year header
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: colorScheme.primaryContainer,
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconButton(
-                icon: const Icon(Icons.chevron_left),
-                onPressed: () {
-                  setState(() {
-                    _focusedMonth = DateTime(
-                      _focusedMonth.year,
-                      _focusedMonth.month - 1,
-                    );
-                  });
-                },
-              ),
-              Text(
-                '${_getMonthName(_focusedMonth.month)} ${_focusedMonth.year}',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: colorScheme.onPrimaryContainer,
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.chevron_right),
-                onPressed: () {
-                  setState(() {
-                    _focusedMonth = DateTime(
-                      _focusedMonth.year,
-                      _focusedMonth.month + 1,
-                    );
-                  });
-                },
-              ),
-            ],
-          ),
-        ),
-        // Calendar grid
         Padding(
-          padding: const EdgeInsets.all(16),
-          child: CalendarDatePicker(
-            initialDate: widget.selectedDate ?? DateTime.now(),
-            firstDate: widget.minDate ?? DateTime(1900),
-            lastDate: widget.maxDate ?? DateTime(2100),
-            currentDate: _focusedMonth,
-            onDateChanged: widget.onDateSelected,
-          ),
+          padding: const EdgeInsets.symmetric(vertical:8.0),
+          child: Text(DateFormat.yMMMM().format(month), style: Theme.of(context).textTheme.titleMedium),
         ),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:7, childAspectRatio:1.2),
+          itemCount: days.length,
+          itemBuilder: (context, index) {
+            final day = days[index];
+            if (day == null) return SizedBox.shrink();
+            final isToday = DateTime.now().day==day.day && DateTime.now().month==day.month && DateTime.now().year==day.year;
+            return InkWell(
+              onTap: ()=> onDayTap?.call(day),
+              child: Container(
+                margin: EdgeInsets.all(4),
+                decoration: BoxDecoration(color: isToday? Colors.blue[100] : null, borderRadius: BorderRadius.circular(6)),
+                child: Center(child: Text('${day.day}')),
+              ),
+            );
+          },
+        )
       ],
     );
-  }
-
-  String _getMonthName(int month) {
-    const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    return months[month - 1];
   }
 }

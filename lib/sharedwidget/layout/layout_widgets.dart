@@ -1,11 +1,17 @@
-/// Layout Components
-///
-/// This library exports layout widgets like scaffolds and steppers.
-library layout_widgets;
-
-export 'reusable_calendar.dart';
-export 'reusable_carousel.dart';
-export 'reusable_data_grid.dart';
-export 'reusable_scaffold.dart';
-export 'reusable_stepper.dart';
-export 'walkthrough.dart';
+export 'layout/infinite_scroll.dart';
+export 'layout/lazy_loader.dart';
+export 'layout/parallax_scroll.dart';
+export 'layout/reusable_accordion.dart';
+export 'layout/reusable_agenda.dart';
+export 'layout/reusable_calendar.dart';
+export 'layout/reusable_carousel.dart';
+export 'layout/reusable_chart.dart';
+export 'layout/reusable_data_grid.dart';
+export 'layout/reusable_expansion_panel.dart';
+export 'layout/reusable_leaderboard.dart';
+export 'layout/reusable_pagination.dart';
+export 'layout/reusable_scaffold.dart';
+export 'layout/reusable_stepper.dart';
+export 'layout/reusable_table.dart';
+export 'layout/reusable_timeline.dart';
+export 'layout/walkthrough.dart';

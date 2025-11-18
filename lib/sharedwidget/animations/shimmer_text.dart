@@ -1,64 +1,23 @@
 import 'package:flutter/material.dart';
 
-/// A reusable shimmer text widget with animated shimmer effect.
-///
-/// Creates text with a shimmer animation effect, useful for loading states
-/// or to draw attention to text.
-///
-/// Example:
-/// ```dart
-/// ShimmerText(
-///   'Loading...',
-///   style: TextStyle(fontSize: 24),
-///   baseColor: Colors.grey,
-///   highlightColor: Colors.white,
-/// )
-/// ```
-class ShimmerText extends StatefulWidget {
-  /// The text to display
+class ReusableShimmerText extends StatefulWidget {
   final String text;
-
-  /// Text style
   final TextStyle? style;
-
-  /// Base color (darker color)
-  final Color baseColor;
-
-  /// Highlight color (lighter color for shimmer effect)
-  final Color highlightColor;
-
-  /// Duration of the shimmer animation
   final Duration duration;
 
-  const ShimmerText(
-    this.text, {
-    super.key,
-    this.style,
-    this.baseColor = const Color(0xFFE0E0E0),
-    this.highlightColor = const Color(0xFFF5F5F5),
-    this.duration = const Duration(milliseconds: 1500),
-  });
+  const ReusableShimmerText({Key? key, required this.text, this.style, this.duration = const Duration(seconds:2)}) : super(key: key);
 
   @override
-  State<ShimmerText> createState() => _ShimmerTextState();
+  State<ReusableShimmerText> createState() => _ReusableShimmerTextState();
 }
 
-class _ShimmerTextState extends State<ShimmerText>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _animation;
+class _ReusableShimmerTextState extends State<ReusableShimmerText> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    )..repeat();
-
-    _animation = Tween<double>(begin: -1.0, end: 2.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _controller = AnimationController(vsync: this, duration: widget.duration)..repeat();
   }
 
   @override
@@ -69,33 +28,22 @@ class _ShimmerTextState extends State<ShimmerText>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final textStyle = widget.style ?? theme.textTheme.titleLarge;
-
+    final text = widget.text;
+    final style = widget.style ?? Theme.of(context).textTheme.titleLarge;
     return AnimatedBuilder(
-      animation: _animation,
+      animation: _controller,
       builder: (context, child) {
         return ShaderMask(
-          shaderCallback: (bounds) {
+          shaderCallback: (rect) {
             return LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.centerRight,
-              stops: [
-                _animation.value - 0.3,
-                _animation.value,
-                _animation.value + 0.3,
-              ],
-              colors: [
-                widget.baseColor,
-                widget.highlightColor,
-                widget.baseColor,
-              ],
-            ).createShader(bounds);
+              colors: [Colors.grey, Colors.white, Colors.grey],
+              stops: [0.0, 0.5, 1.0],
+              begin: Alignment(-1 - _controller.value*2, 0),
+              end: Alignment(1 - _controller.value*2, 0),
+            ).createShader(rect);
           },
-          child: Text(
-            widget.text,
-            style: textStyle?.copyWith(color: Colors.white),
-          ),
+          blendMode: BlendMode.srcIn,
+          child: Text(text, style: style),
         );
       },
     );
