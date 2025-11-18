@@ -1,2 +1,2 @@
-export 'responsive/adaptive_widget.dart';
-export 'responsive/breakpoint_builder.dart';
+export 'adaptive_widget.dart';
+export 'breakpoint_builder.dart';

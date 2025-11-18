@@ -1,1 +1,1 @@
-export 'utilities/version_checker.dart';
+export 'version_checker.dart';

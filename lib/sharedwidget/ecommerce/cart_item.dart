@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'quantity_selector.dart';
+import '../forms/quantity_selector.dart';
 import 'price_tag.dart';
 
 class ReusableCartItem extends StatelessWidget {

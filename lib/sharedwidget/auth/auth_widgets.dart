@@ -1,2 +1,2 @@
-export 'auth/biometric_auth.dart';
-export 'auth/permission_request.dart';
+export 'biometric_auth.dart';
+export 'permission_request.dart';

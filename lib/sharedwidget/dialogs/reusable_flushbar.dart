@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:reuablewidgets/sharedwidget/reusable_alert_dialog.dart';
 import 'reusable_dialog.dart';
 import 'reusable_confirmation_dialog.dart';
-import 'reusable_banner.dart';
-import 'reusable_status_banner.dart';
-import 'reusable_tooltip.dart';
-import 'reusable_notification_badge.dart';
+import 'reusable_popup.dart';
+import '../feedback/reusable_banner.dart';
+import '../feedback/reusable_status_banner.dart';
+import '../feedback/reusable_tooltip.dart';
+import '../feedback/reusable_notification_badge.dart';
 
 // Simple bottom sheet wrapper
 class ReusableBottomSheet {
@@ -38,6 +39,31 @@ class ReusableAlertDialog {
             child: Text('OK'),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// Flushbar-style snackbar
+class ReusableFlushbar {
+  static void show(
+    BuildContext context, {
+    required String message,
+    String? title,
+    Duration duration = const Duration(seconds: 3),
+  }) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (title != null) Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(message),
+          ],
+        ),
+        duration: duration,
+        behavior: SnackBarBehavior.floating,
       ),
     );
   }
