@@ -129,7 +129,7 @@ dependencies:
   fl_chart: ^0.66.0
   mobile_scanner: ^6.0.11
   pdfx: ^2.6.0
-  image_cropper: ^10.0.0+1
+  image_cropper: ^11.0.0
   video_player: ^2.9.5
 
   # PDF viewing (optional - uncomment when needed)
