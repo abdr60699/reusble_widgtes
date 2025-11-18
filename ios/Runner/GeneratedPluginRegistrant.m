@@ -42,6 +42,12 @@
 @import connectivity_plus;
 #endif
 
+#if __has_include(<device_info_plus/FPPDeviceInfoPlusPlugin.h>)
+#import <device_info_plus/FPPDeviceInfoPlusPlugin.h>
+#else
+@import device_info_plus;
+#endif
+
 #if __has_include(<firebase_analytics/FirebaseAnalyticsPlugin.h>)
 #import <firebase_analytics/FirebaseAnalyticsPlugin.h>
 #else
@@ -186,10 +192,22 @@
 @import google_sign_in_ios;
 #endif
 
+#if __has_include(<image_cropper/FLTImageCropperPlugin.h>)
+#import <image_cropper/FLTImageCropperPlugin.h>
+#else
+@import image_cropper;
+#endif
+
 #if __has_include(<image_picker_ios/FLTImagePickerPlugin.h>)
 #import <image_picker_ios/FLTImagePickerPlugin.h>
 #else
 @import image_picker_ios;
+#endif
+
+#if __has_include(<mobile_scanner/MobileScannerPlugin.h>)
+#import <mobile_scanner/MobileScannerPlugin.h>
+#else
+@import mobile_scanner;
 #endif
 
 #if __has_include(<package_info_plus/FPPPackageInfoPlusPlugin.h>)
@@ -202,6 +220,12 @@
 #import <path_provider_foundation/PathProviderPlugin.h>
 #else
 @import path_provider_foundation;
+#endif
+
+#if __has_include(<pdfx/PdfxPlugin.h>)
+#import <pdfx/PdfxPlugin.h>
+#else
+@import pdfx;
 #endif
 
 #if __has_include(<sentry_flutter/SentryFlutterPlugin.h>)
@@ -234,6 +258,12 @@
 @import url_launcher_ios;
 #endif
 
+#if __has_include(<video_player_avfoundation/FVPVideoPlayerPlugin.h>)
+#import <video_player_avfoundation/FVPVideoPlayerPlugin.h>
+#else
+@import video_player_avfoundation;
+#endif
+
 @implementation GeneratedPluginRegistrant
 
 + (void)registerWithRegistry:(NSObject<FlutterPluginRegistry>*)registry {
@@ -243,6 +273,7 @@
   [AudioplayersDarwinPlugin registerWithRegistrar:[registry registrarForPlugin:@"AudioplayersDarwinPlugin"]];
   [CameraPlugin registerWithRegistrar:[registry registrarForPlugin:@"CameraPlugin"]];
   [ConnectivityPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"ConnectivityPlusPlugin"]];
+  [FPPDeviceInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FPPDeviceInfoPlusPlugin"]];
   [FirebaseAnalyticsPlugin registerWithRegistrar:[registry registrarForPlugin:@"FirebaseAnalyticsPlugin"]];
   [FLTFirebaseAuthPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseAuthPlugin"]];
   [FLTFirebaseCorePlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTFirebaseCorePlugin"]];
@@ -267,14 +298,18 @@
   [GoogleMlKitTextRecognitionPlugin registerWithRegistrar:[registry registrarForPlugin:@"GoogleMlKitTextRecognitionPlugin"]];
   [GoogleMlKitTranslationPlugin registerWithRegistrar:[registry registrarForPlugin:@"GoogleMlKitTranslationPlugin"]];
   [FLTGoogleSignInPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTGoogleSignInPlugin"]];
+  [FLTImageCropperPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImageCropperPlugin"]];
   [FLTImagePickerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FLTImagePickerPlugin"]];
+  [MobileScannerPlugin registerWithRegistrar:[registry registrarForPlugin:@"MobileScannerPlugin"]];
   [FPPPackageInfoPlusPlugin registerWithRegistrar:[registry registrarForPlugin:@"FPPPackageInfoPlusPlugin"]];
   [PathProviderPlugin registerWithRegistrar:[registry registrarForPlugin:@"PathProviderPlugin"]];
+  [PdfxPlugin registerWithRegistrar:[registry registrarForPlugin:@"PdfxPlugin"]];
   [SentryFlutterPlugin registerWithRegistrar:[registry registrarForPlugin:@"SentryFlutterPlugin"]];
   [SharedPreferencesPlugin registerWithRegistrar:[registry registrarForPlugin:@"SharedPreferencesPlugin"]];
   [SignInWithApplePlugin registerWithRegistrar:[registry registrarForPlugin:@"SignInWithApplePlugin"]];
   [SqflitePlugin registerWithRegistrar:[registry registrarForPlugin:@"SqflitePlugin"]];
   [URLLauncherPlugin registerWithRegistrar:[registry registrarForPlugin:@"URLLauncherPlugin"]];
+  [FVPVideoPlayerPlugin registerWithRegistrar:[registry registrarForPlugin:@"FVPVideoPlayerPlugin"]];
 }
 
 @end

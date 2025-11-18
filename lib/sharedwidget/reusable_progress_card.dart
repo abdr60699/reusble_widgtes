@@ -16,7 +16,7 @@ class ReusableProgressCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(title, style: Theme.of(context).textTheme.subtitle2),
+            Text(title, style: Theme.of(context).textTheme.headlineSmall),
             SizedBox(height: 8),
             LinearProgressIndicator(value: progress),
             SizedBox(height: 8),
